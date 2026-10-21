@@ -25,7 +25,7 @@ body{margin:0}
 <div aria-hidden="true" style="position: absolute; right: 7px; bottom: 3px; font-size: 19px; font-weight: 700; color: {{sq.co}}">{{sq.file}}</div>
 </div>
 </sc-for>
-<svg aria-hidden="true" width="896" height="896" viewBox="0 0 896 896" style="position: absolute; left: 0; top: 0; pointer-events: none"><defs><marker id="ah-a2" viewBox="0 0 10 10" refX="3" refY="5" markerWidth="2.6" markerHeight="2.6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D4AF37"></path></marker></defs><path d="{{a1}}" stroke="#D4AF37" stroke-width="20" stroke-linecap="round" fill="none" opacity="0.9" marker-end="url(#ah-a2)"></path><path d="{{a2}}" stroke="#D4AF37" stroke-width="20" stroke-linecap="round" fill="none" opacity="0.9" marker-end="url(#ah-a2)"></path></svg>
+<svg aria-hidden="true" width="896" height="896" viewBox="0 0 896 896" style="position: absolute; left: 0; top: 0; pointer-events: none"><g stroke="#141414" stroke-opacity="0.75" stroke-linecap="round" stroke-linejoin="round" fill="#141414" fill-opacity="0.75"><path d="{{a1.shaft}}" stroke-width="38" fill="none"></path><polygon points="{{a1.head}}" stroke-width="12"></polygon><path d="{{a2.shaft}}" stroke-width="38" fill="none"></path><polygon points="{{a2.head}}" stroke-width="12"></polygon></g><g stroke="#D4AF37" stroke-linecap="round" stroke-linejoin="round" fill="#D4AF37"><path d="{{a1.shaft}}" stroke-width="28" fill="none"></path><polygon points="{{a1.head}}" stroke-width="2"></polygon><path d="{{a2.shaft}}" stroke-width="28" fill="none"></path><polygon points="{{a2.head}}" stroke-width="2"></polygon></g></svg>
 <div style="position: absolute; inset: 0; display: grid; grid-template-columns: repeat(8, 112px); pointer-events: none">
 <sc-for list="{{squares}}" as="sq" hint-placeholder-count="64"><div style="position: relative; width: 112px; height: 112px"><sc-if value="{{sq.img}}"><img src="{{sq.img}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%"></sc-if></div></sc-for>
 </div>
@@ -56,8 +56,11 @@ return out;
 }
 arrow(a, b, s) {
 var f = 'abcdefgh', x1 = f.indexOf(a[0]) * s + s / 2, y1 = (8 - Number(a[1])) * s + s / 2, x2 = f.indexOf(b[0]) * s + s / 2, y2 = (8 - Number(b[1])) * s + s / 2;
-var dx = x2 - x1, dy = y2 - y1, L = Math.sqrt(dx * dx + dy * dy), k = (L - s * 0.36) / L;
-return 'M' + x1 + ' ' + y1 + 'L' + (x1 + dx * k).toFixed(1) + ' ' + (y1 + dy * k).toFixed(1);
+var dx = x2 - x1, dy = y2 - y1, L = Math.sqrt(dx * dx + dy * dy), ux = dx / L, uy = dy / L;
+var tip = L - s * 0.26, base = tip - s * 0.5, w = s * 0.32;
+var tx = x1 + ux * tip, ty = y1 + uy * tip, bx = x1 + ux * base, by = y1 + uy * base;
+var pt = function (x, y) { return x.toFixed(1) + ',' + y.toFixed(1); };
+return { shaft: 'M' + x1 + ' ' + y1 + 'L' + pt(bx + ux * 4, by + uy * 4).replace(',', ' '), head: pt(tx, ty) + ' ' + pt(bx - uy * w, by + ux * w) + ' ' + pt(bx + uy * w, by - ux * w) };
 }
 renderVals() {
 var p = {"g1": "K", "e1": "R", "a2": "P", "b2": "P", "c2": "P", "f2": "P", "g2": "P", "h2": "P", "g8": "k", "c6": "q", "f8": "r", "c8": "b", "a7": "p", "b7": "p", "f7": "p", "g7": "p", "h7": "p", "e7": "N"};

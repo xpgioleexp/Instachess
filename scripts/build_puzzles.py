@@ -99,7 +99,9 @@ BOARD_SLIDE = """<div style="width: 1080px; height: 1350px; box-sizing: border-b
 </x-dc>
 """
 
-ARROWS = """<svg aria-hidden="true" width="896" height="896" viewBox="0 0 896 896" style="position: absolute; left: 0; top: 0; pointer-events: none"><defs><marker id="ah-%(id)s" viewBox="0 0 10 10" refX="3" refY="5" markerWidth="2.6" markerHeight="2.6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D4AF37"></path></marker></defs>%(paths)s</svg>
+# Arrows are drawn twice: a dark outline pass under all of them, then the gold pass,
+# so they read on the light squares and two arrows from one square don't cut each other.
+ARROWS = """<svg aria-hidden="true" width="896" height="896" viewBox="0 0 896 896" style="position: absolute; left: 0; top: 0; pointer-events: none"><g stroke="#141414" stroke-opacity="0.75" stroke-linecap="round" stroke-linejoin="round" fill="#141414" fill-opacity="0.75">%(outline)s</g><g stroke="#D4AF37" stroke-linecap="round" stroke-linejoin="round" fill="#D4AF37">%(gold)s</g></svg>
 """
 
 SCRIPT = """<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":1350}}'>
@@ -117,8 +119,11 @@ return out;
 }
 arrow(a, b, s) {
 var f = 'abcdefgh', x1 = f.indexOf(a[0]) * s + s / 2, y1 = (8 - Number(a[1])) * s + s / 2, x2 = f.indexOf(b[0]) * s + s / 2, y2 = (8 - Number(b[1])) * s + s / 2;
-var dx = x2 - x1, dy = y2 - y1, L = Math.sqrt(dx * dx + dy * dy), k = (L - s * 0.36) / L;
-return 'M' + x1 + ' ' + y1 + 'L' + (x1 + dx * k).toFixed(1) + ' ' + (y1 + dy * k).toFixed(1);
+var dx = x2 - x1, dy = y2 - y1, L = Math.sqrt(dx * dx + dy * dy), ux = dx / L, uy = dy / L;
+var tip = L - s * 0.26, base = tip - s * 0.5, w = s * 0.32;
+var tx = x1 + ux * tip, ty = y1 + uy * tip, bx = x1 + ux * base, by = y1 + uy * base;
+var pt = function (x, y) { return x.toFixed(1) + ',' + y.toFixed(1); };
+return { shaft: 'M' + x1 + ' ' + y1 + 'L' + pt(bx + ux * 4, by + uy * 4).replace(',', ' '), head: pt(tx, ty) + ' ' + pt(bx - uy * w, by + ux * w) + ' ' + pt(bx + uy * w, by - ux * w) };
 }
 renderVals() {
 var p = %(pos)s;
@@ -131,10 +136,11 @@ return { squares: this.squares(p, %(ring)s, 112)%(arrowvals)s };
 """
 
 def board_slide(d):
-    paths, vals = [], []
+    outline, gold, vals = [], [], []
     for i, (a, b, dashed) in enumerate(d['arrows'], 1):
-        dash = ' stroke-dasharray="2 30"' if dashed else ''
-        paths.append('<path d="{{a%d}}" stroke="#D4AF37" stroke-width="20" stroke-linecap="round" fill="none" opacity="0.9"%s marker-end="url(#ah-%s)"></path>' % (i, dash, d['file'].lower()))
+        dash = ' stroke-dasharray="1 40"' if dashed else ''
+        outline.append('<path d="{{a%d.shaft}}" stroke-width="38" fill="none"%s></path><polygon points="{{a%d.head}}" stroke-width="12"></polygon>' % (i, dash, i))
+        gold.append('<path d="{{a%d.shaft}}" stroke-width="28" fill="none"%s></path><polygon points="{{a%d.head}}" stroke-width="2"></polygon>' % (i, dash, i))
         vals.append(", a%d: this.arrow('%s', '%s', 112)" % (i, a, b))
     lines = []
     for lead, body in d['lines']:
@@ -144,7 +150,7 @@ def board_slide(d):
             lines.append('<p style="margin: 0; font-size: 28px; line-height: 1.34; color: #B9B1A0; max-width: 896px">%s</p>' % body)
     html = HEAD % d + BOARD_SLIDE % dict(
         upper='; text-transform: uppercase' if d['upper'] else '', head=d['head'], meta=d['meta'], label=d['label'], n=d['n'],
-        squares=SQUARE % {'s': 112}, pieces=PIECES % {'s': 112}, arrows=ARROWS % {'id': d['file'].lower(), 'paths': ''.join(paths)} if paths else '',
+        squares=SQUARE % {'s': 112}, pieces=PIECES % {'s': 112}, arrows=ARROWS % {'outline': ''.join(outline), 'gold': ''.join(gold)} if gold else '',
         lines='\n'.join(lines))
     html += SCRIPT % dict(pos=json.dumps(d['pos']), ring=json.dumps(d['ring']), arrowvals=''.join(vals))
     return html
