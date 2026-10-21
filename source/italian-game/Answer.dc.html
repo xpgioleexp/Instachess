@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Italian Game: Puzzle Answer</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 64px 72px; background: #0B0B0B; color: #F5F1E6; font-family: Inter, sans-serif; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 26px; font-weight: 600; color: #B9B1A0">
+<div>Puzzle answer</div>
+<div>7 / 9</div>
+</div>
+<h2 style="margin: 0; font-family: Anton, sans-serif; font-weight: 400; font-size: 96px; line-height: 1; letter-spacing: 1px">...Nf3 is mate</h2>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; gap: 10px">
+<div aria-hidden="true" style="display: flex; flex-direction: column; width: 24px">
+<sc-for list="{{ranks}}" as="r" hint-placeholder-count="8"><div style="height: 72px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 500; color: #B9B1A0">{{r}}</div></sc-for>
+</div>
+<div role="img" aria-label="Answer: the knight jumps from d4 to f3 with check; the bishop on e2 cannot take it because the queen on e4 pins it to the king on e1" style="position: relative; width: 576px; height: 576px; display: grid; grid-template-columns: repeat(8, 72px)">
+<sc-for list="{{squares}}" as="sq" hint-placeholder-count="64">
+<div style="width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; font-family: 'DejaVu Sans', 'Segoe UI Symbol', 'Arial Unicode MS', sans-serif; font-size: 58px; line-height: 1; background: {{sq.bg}}; box-shadow: {{sq.ring}}; color: {{sq.fg}}; -webkit-text-stroke: {{sq.stroke}}; paint-order: stroke fill">{{sq.glyph}}</div>
+</sc-for>
+<svg aria-hidden="true" width="576" height="576" viewBox="0 0 576 576" style="position: absolute; left: 0; top: 0; pointer-events: none"><defs><marker id="ah-answer" viewBox="0 0 10 10" refX="3" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D4AF37"></path></marker></defs><path d="{{a1}}" stroke="#D4AF37" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.92" marker-end="url(#ah-answer)"></path><path d="{{a2}}" stroke="#D4AF37" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.92" stroke-dasharray="2 22" marker-end="url(#ah-answer)"></path></svg>
+</div>
+</div>
+<div aria-hidden="true" style="display: flex; margin-left: 34px">
+<sc-for list="{{files}}" as="f" hint-placeholder-count="8"><div style="width: 72px; text-align: center; font-size: 20px; font-weight: 500; color: #B9B1A0">{{f}}</div></sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 920px">
+<p style="margin: 0; font-size: 31px; line-height: 1.38; color: #D8D1C2"><b style="color: #F5F1E6">Check.</b> The knight attacks the king on e1.</p>
+<p style="margin: 0; font-size: 31px; line-height: 1.38; color: #D8D1C2"><b style="color: #F5F1E6">No capture.</b> The bishop on e2 can't take it. It's pinned: move it and the queen on e4 hits the king.</p>
+<p style="margin: 0; font-size: 31px; line-height: 1.38; color: #D8D1C2"><b style="color: #F5F1E6">No escape.</b> d1, d2, f1 and f2 are all blocked by White's own pieces.</p>
+<p style="margin: 0; font-size: 28px; line-height: 1.38; color: #B9B1A0">The lesson: after 3...Nd4, don't take on e5. Play 4.Nxd4 or castle.</p>
+</div>
+<div style="flex: 1"></div>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 26px; font-weight: 600; color: #B9B1A0">
+<div>@pawn.to.king.chess</div>
+<svg aria-hidden="true" width="44" height="28" viewBox="0 0 44 28" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M2 14h38M28 3l12 11-12 11"></path></svg>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":1350}}'>
+class Component extends DCLogic {
+start() {
+var p = {}, back = 'RNBQKBNR', f = 'abcdefgh';
+for (var i = 0; i < 8; i++) { p[f[i] + '1'] = back[i]; p[f[i] + '2'] = 'P'; p[f[i] + '7'] = 'p'; p[f[i] + '8'] = back[i].toLowerCase(); }
+return p;
+}
+mv(p, a, b) { p[b] = p[a]; delete p[a]; }
+squares(pos, hl) {
+var g = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟' }, f = 'abcdefgh', out = [];
+for (var r = 8; r >= 1; r--) {
+for (var i = 0; i < 8; i++) {
+var n = f[i] + r, dark = (i + r) % 2 === 1, pc = pos[n], glyph = '', fg = '#141414', stroke = '0px #141414';
+if (pc) { glyph = g[pc.toLowerCase()] + '︎'; if (pc === pc.toUpperCase()) { fg = '#FFFFFF'; stroke = '2px #141414'; } }
+out.push({ glyph: glyph, fg: fg, stroke: stroke, bg: dark ? '#9C7A45' : '#EADBB8', ring: hl.indexOf(n) >= 0 ? 'inset 0 0 0 6px #D4AF37' : 'none' });
+}
+}
+return out;
+}
+arrow(a, b, s) {
+var f = 'abcdefgh', x1 = f.indexOf(a[0]) * s + s / 2, y1 = (8 - Number(a[1])) * s + s / 2, x2 = f.indexOf(b[0]) * s + s / 2, y2 = (8 - Number(b[1])) * s + s / 2;
+var dx = x2 - x1, dy = y2 - y1, L = Math.sqrt(dx * dx + dy * dy), k = (L - s * 0.38) / L;
+return 'M' + x1 + ' ' + y1 + 'L' + (x1 + dx * k).toFixed(1) + ' ' + (y1 + dy * k).toFixed(1);
+}
+renderVals() {
+var p = this.start();
+this.mv(p, 'e2', 'e4'); this.mv(p, 'e7', 'e5'); this.mv(p, 'g1', 'f3'); this.mv(p, 'b8', 'c6'); this.mv(p, 'f1', 'c4');
+this.mv(p, 'c6', 'd4'); this.mv(p, 'f3', 'e5'); this.mv(p, 'd8', 'g5'); this.mv(p, 'e5', 'f7'); this.mv(p, 'g5', 'g2');
+this.mv(p, 'h1', 'f1'); this.mv(p, 'g2', 'e4'); this.mv(p, 'c4', 'e2');
+this.mv(p, 'd4', 'f3');
+return { squares: this.squares(p, ['e1', 'e2']), a1: this.arrow('d4', 'f3', 72), a2: this.arrow('e4', 'e1', 72), ranks: ['8', '7', '6', '5', '4', '3', '2', '1'], files: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] };
+}
+}
+</script>
+</body>
+</html>

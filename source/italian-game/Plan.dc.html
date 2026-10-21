@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Italian Game: The Plan</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 64px 72px; background: #0B0B0B; color: #F5F1E6; font-family: Inter, sans-serif; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 26px; font-weight: 600; color: #B9B1A0">
+<div>The Italian Game</div>
+<div>4 / 9</div>
+</div>
+<h2 style="margin: 0; font-family: Anton, sans-serif; font-weight: 400; font-size: 96px; line-height: 1; text-transform: uppercase; letter-spacing: 1px">Own the center</h2>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; gap: 10px">
+<div aria-hidden="true" style="display: flex; flex-direction: column; width: 24px">
+<sc-for list="{{ranks}}" as="r" hint-placeholder-count="8"><div style="height: 80px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 500; color: #B9B1A0">{{r}}</div></sc-for>
+</div>
+<div role="img" aria-label="Board after 3...Bc5 4.c3 Nf6 5.d4: the pawn on d4 attacks e5 and the bishop on c5, backed by the pawn on c3" style="position: relative; width: 640px; height: 640px; display: grid; grid-template-columns: repeat(8, 80px)">
+<sc-for list="{{squares}}" as="sq" hint-placeholder-count="64">
+<div style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; font-family: 'DejaVu Sans', 'Segoe UI Symbol', 'Arial Unicode MS', sans-serif; font-size: 64px; line-height: 1; background: {{sq.bg}}; box-shadow: {{sq.ring}}; color: {{sq.fg}}; -webkit-text-stroke: {{sq.stroke}}; paint-order: stroke fill">{{sq.glyph}}</div>
+</sc-for>
+<svg aria-hidden="true" width="640" height="640" viewBox="0 0 640 640" style="position: absolute; left: 0; top: 0; pointer-events: none"><defs><marker id="ah-plan" viewBox="0 0 10 10" refX="3" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D4AF37"></path></marker></defs><path d="{{a1}}" stroke="#D4AF37" stroke-width="13" stroke-linecap="round" fill="none" opacity="0.92" marker-end="url(#ah-plan)"></path><path d="{{a2}}" stroke="#D4AF37" stroke-width="13" stroke-linecap="round" fill="none" opacity="0.92" marker-end="url(#ah-plan)"></path></svg>
+</div>
+</div>
+<div aria-hidden="true" style="display: flex; margin-left: 34px">
+<sc-for list="{{files}}" as="f" hint-placeholder-count="8"><div style="width: 80px; text-align: center; font-size: 20px; font-weight: 500; color: #B9B1A0">{{f}}</div></sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="font-size: 26px; font-weight: 600; color: #B9B1A0">3...Bc5 4.c3 Nf6 5.d4, Black to move</div>
+<p style="margin: 0; font-size: 34px; line-height: 1.35; color: #D8D1C2; max-width: 900px">c3 prepares d4. Now d4 hits e5 and the bishop at once, and if Black takes, you take back with a pawn. Castle next.</p>
+</div>
+<div style="flex: 1"></div>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 26px; font-weight: 600; color: #B9B1A0">
+<div>@pawn.to.king.chess</div>
+<svg aria-hidden="true" width="44" height="28" viewBox="0 0 44 28" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M2 14h38M28 3l12 11-12 11"></path></svg>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":1350}}'>
+class Component extends DCLogic {
+start() {
+var p = {}, back = 'RNBQKBNR', f = 'abcdefgh';
+for (var i = 0; i < 8; i++) { p[f[i] + '1'] = back[i]; p[f[i] + '2'] = 'P'; p[f[i] + '7'] = 'p'; p[f[i] + '8'] = back[i].toLowerCase(); }
+return p;
+}
+mv(p, a, b) { p[b] = p[a]; delete p[a]; }
+squares(pos, hl) {
+var g = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟' }, f = 'abcdefgh', out = [];
+for (var r = 8; r >= 1; r--) {
+for (var i = 0; i < 8; i++) {
+var n = f[i] + r, dark = (i + r) % 2 === 1, pc = pos[n], glyph = '', fg = '#141414', stroke = '0px #141414';
+if (pc) { glyph = g[pc.toLowerCase()] + '︎'; if (pc === pc.toUpperCase()) { fg = '#FFFFFF'; stroke = '2px #141414'; } }
+out.push({ glyph: glyph, fg: fg, stroke: stroke, bg: dark ? '#9C7A45' : '#EADBB8', ring: hl.indexOf(n) >= 0 ? 'inset 0 0 0 6px #D4AF37' : 'none' });
+}
+}
+return out;
+}
+arrow(a, b, s) {
+var f = 'abcdefgh', x1 = f.indexOf(a[0]) * s + s / 2, y1 = (8 - Number(a[1])) * s + s / 2, x2 = f.indexOf(b[0]) * s + s / 2, y2 = (8 - Number(b[1])) * s + s / 2;
+var dx = x2 - x1, dy = y2 - y1, L = Math.sqrt(dx * dx + dy * dy), k = (L - s * 0.38) / L;
+return 'M' + x1 + ' ' + y1 + 'L' + (x1 + dx * k).toFixed(1) + ' ' + (y1 + dy * k).toFixed(1);
+}
+renderVals() {
+var p = this.start();
+this.mv(p, 'e2', 'e4'); this.mv(p, 'e7', 'e5'); this.mv(p, 'g1', 'f3'); this.mv(p, 'b8', 'c6'); this.mv(p, 'f1', 'c4');
+this.mv(p, 'f8', 'c5'); this.mv(p, 'c2', 'c3'); this.mv(p, 'g8', 'f6'); this.mv(p, 'd2', 'd4');
+return { squares: this.squares(p, ['c3', 'd4']), a1: this.arrow('d4', 'e5', 80), a2: this.arrow('d4', 'c5', 80), ranks: ['8', '7', '6', '5', '4', '3', '2', '1'], files: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] };
+}
+}
+</script>
+</body>
+</html>

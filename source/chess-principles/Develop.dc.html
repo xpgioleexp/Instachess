@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Develop Your Pieces</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 88px 96px; background: #0B0B0B; color: #F5F1E6; font-family: Inter, sans-serif; display: flex; flex-direction: column; justify-content: space-between">
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 26px; font-weight: 700; letter-spacing: 6px">
+<div style="color: {{accent}}">PRINCIPLE 02</div>
+<div style="color: #9A9384">03 / 07</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 36px">
+<h2 style="margin: 0; font-family: Anton, sans-serif; font-weight: 400; font-size: 110px; line-height: 0.95; text-transform: uppercase">Develop before<br>you <span style="color: {{accent}}">attack</span></h2>
+<div role="img" aria-label="Chess board: White knight on f3 and bishop on c4 developed, Black knights on c6 and f6" style="align-self: center; display: grid; grid-template-columns: repeat(8, 70px); border: 5px solid {{accent}}">
+<sc-for list="{{squares}}" as="sq" hint-placeholder-count="64">
+<div style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; font-family: 'DejaVu Sans', 'Segoe UI Symbol', 'Arial Unicode MS', sans-serif; font-size: 54px; line-height: 1; background: {{sq.bg}}; color: {{sq.fg}}; -webkit-text-stroke: {{sq.stroke}}; paint-order: stroke fill">{{sq.glyph}}</div>
+</sc-for>
+</div>
+<p style="margin: 0; font-size: 36px; line-height: 1.35; color: #C9C2B2">Get knights and bishops off the back rank first. Moving the same piece twice or bringing your queen out early just hands your opponent free time.</p>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 28px; font-weight: 600; letter-spacing: 3px">
+<div style="color: #9A9384">@pawn.to.king.chess</div>
+<svg aria-hidden="true" width="44" height="28" viewBox="0 0 44 28" fill="none" stroke="#9A9384" stroke-width="3.5"><path d="M2 14h38M28 3l12 11-12 11"></path></svg>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#D4AF37","options":["#D4AF37","#E8E2D0","#C0392B","#2ECC71"]},"$preview":{"width":1080,"height":1350}}'>
+class Component extends DCLogic {
+start() {
+var p = {}, back = 'RNBQKBNR', f = 'abcdefgh';
+for (var i = 0; i < 8; i++) { p[f[i] + '1'] = back[i]; p[f[i] + '2'] = 'P'; p[f[i] + '7'] = 'p'; p[f[i] + '8'] = back[i].toLowerCase(); }
+return p;
+}
+mv(p, a, b) { p[b] = p[a]; delete p[a]; }
+board(pos, hl) {
+var g = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟' }, f = 'abcdefgh', out = [];
+for (var r = 8; r >= 1; r--) {
+for (var i = 0; i < 8; i++) {
+var n = f[i] + r, dark = (i + r) % 2 === 1, h = hl.indexOf(n) >= 0, pc = pos[n];
+var glyph = '', fg = '#141414', stroke = '0px #141414';
+if (pc) { glyph = g[pc.toLowerCase()] + '︎'; if (pc === pc.toUpperCase()) { fg = '#FFFFFF'; stroke = '2px #141414'; } }
+out.push({ glyph: glyph, fg: fg, stroke: stroke, bg: h ? (dark ? '#C9A227' : '#E8C766') : (dark ? '#9C7A45' : '#EADBB8') });
+}
+}
+return out;
+}
+renderVals() {
+var p = this.start();
+this.mv(p, 'e2', 'e4'); this.mv(p, 'e7', 'e5'); this.mv(p, 'g1', 'f3'); this.mv(p, 'b8', 'c6'); this.mv(p, 'f1', 'c4'); this.mv(p, 'g8', 'f6');
+return { accent: this.props.accent ?? '#D4AF37', squares: this.board(p, ['f3', 'c4']) };
+}
+}
+</script>
+</body>
+</html>

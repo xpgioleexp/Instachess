@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rule 02 Excuses</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 96px; background: #0B0B0B; color: #F5F1E6; font-family: Inter, sans-serif; display: flex; flex-direction: column; justify-content: space-between">
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 26px; font-weight: 700; letter-spacing: 6px">
+<div style="color: {{accent}}">RULE 02</div>
+<div style="color: #9A9384">03 / 07</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 48px">
+<h2 style="margin: 0; font-family: Anton, sans-serif; font-weight: 400; font-size: 150px; line-height: 0.95; text-transform: uppercase">Kill the<br><span style="color: {{accent}}">story.</span></h2>
+<div style="width: 120px; height: 8px; background: {{accent}}"></div>
+<p style="margin: 0; font-size: 44px; line-height: 1.35; color: #C9C2B2; max-width: 860px">"No time." "No money." "Not the right moment." The only thing standing between you and the goal is the excuse you keep repeating. Stop saying it.</p>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 28px; font-weight: 600; letter-spacing: 3px">
+<div style="color: #9A9384">@pawn.to.king.chess</div>
+<svg aria-hidden="true" width="44" height="28" viewBox="0 0 44 28" fill="none" stroke="#9A9384" stroke-width="3.5"><path d="M2 14h38M28 3l12 11-12 11"></path></svg>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#D4AF37","options":["#D4AF37","#E8E2D0","#C0392B","#2ECC71"]},"$preview":{"width":1080,"height":1350}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#D4AF37' };
+}
+}
+</script>
+</body>
+</html>
