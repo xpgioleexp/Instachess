@@ -1,0 +1,2 @@
+Chess piece SVGs: "cburnett" set by Colin M.L. Burnett, via lichess.org.
+License: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/), also GPLv2+.
