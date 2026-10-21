@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Puzzle Cover</title>
+<title>Cover</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -13,7 +13,7 @@
 body{margin:0}
 </style>
 </helmet>
-<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 64px 72px; background: #0B0B0B; color: #F5F1E6; font-family: Inter, sans-serif; display: flex; flex-direction: column; gap: 40px">
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 64px 72px 48px; background: #0B0B0B; color: #F5F1E6; font-family: Inter, sans-serif; display: flex; flex-direction: column; gap: 40px">
 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 26px; font-weight: 600; color: #B9B1A0">
 <div>Puzzle Tuesday</div>
 <div>1 / 8</div>
@@ -21,27 +21,27 @@ body{margin:0}
 <div style="flex: 1"></div>
 <h1 style="margin: 0; font-family: Anton, sans-serif; font-weight: 400; font-size: 150px; line-height: 0.94; text-transform: uppercase; letter-spacing: 1px">Can you<br>solve all 3?</h1>
 <p style="margin: 0; font-size: 38px; line-height: 1.35; color: #D8D1C2; max-width: 880px">Easy, medium, hard. Each answer is on the slide right after its puzzle, so solve before you swipe.</p>
-<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 16px">
-<div style="display: flex; flex-direction: column; gap: 14px">
-<div role="img" aria-label="Puzzle 1 preview" style="display: grid; grid-template-columns: repeat(8, 32px); width: 256px">
-<sc-for list="{{b1}}" as="sq" hint-placeholder-count="64"><div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-family: 'DejaVu Sans', 'Segoe UI Symbol', 'Arial Unicode MS', sans-serif; font-size: 26px; line-height: 1; background: {{sq.bg}}; color: {{sq.fg}}; -webkit-text-stroke: {{sq.thin}}; paint-order: stroke fill">{{sq.glyph}}</div></sc-for>
+<div style="display: flex; justify-content: space-between; margin-top: 12px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div role="img" aria-label="Puzzle 1 preview" style="display: grid; grid-template-columns: repeat(8, 37px); width: 296px; border-radius: 3px; overflow: hidden">
+<sc-for list="{{b1}}" as="sq" hint-placeholder-count="64"><div style="position: relative; width: 37px; height: 37px; background: {{sq.bg}}"><sc-if value="{{sq.img}}"><img src="{{sq.img}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%"></sc-if></div></sc-for>
 </div>
-<div style="font-size: 28px; font-weight: 700">1. Easy</div>
-<div style="font-size: 24px; color: #B9B1A0">Mate in one</div>
+<div style="font-size: 30px; font-weight: 700">1. Easy</div>
+<div style="font-size: 26px; color: #B9B1A0; margin-top: -8px">Mate in one</div>
 </div>
-<div style="display: flex; flex-direction: column; gap: 14px">
-<div role="img" aria-label="Puzzle 2 preview" style="display: grid; grid-template-columns: repeat(8, 32px); width: 256px">
-<sc-for list="{{b2}}" as="sq" hint-placeholder-count="64"><div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-family: 'DejaVu Sans', 'Segoe UI Symbol', 'Arial Unicode MS', sans-serif; font-size: 26px; line-height: 1; background: {{sq.bg}}; color: {{sq.fg}}; -webkit-text-stroke: {{sq.thin}}; paint-order: stroke fill">{{sq.glyph}}</div></sc-for>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div role="img" aria-label="Puzzle 2 preview" style="display: grid; grid-template-columns: repeat(8, 37px); width: 296px; border-radius: 3px; overflow: hidden">
+<sc-for list="{{b2}}" as="sq" hint-placeholder-count="64"><div style="position: relative; width: 37px; height: 37px; background: {{sq.bg}}"><sc-if value="{{sq.img}}"><img src="{{sq.img}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%"></sc-if></div></sc-for>
 </div>
-<div style="font-size: 28px; font-weight: 700">2. Medium</div>
-<div style="font-size: 24px; color: #B9B1A0">Win the queen</div>
+<div style="font-size: 30px; font-weight: 700">2. Medium</div>
+<div style="font-size: 26px; color: #B9B1A0; margin-top: -8px">Win the queen</div>
 </div>
-<div style="display: flex; flex-direction: column; gap: 14px">
-<div role="img" aria-label="Puzzle 3 preview" style="display: grid; grid-template-columns: repeat(8, 32px); width: 256px">
-<sc-for list="{{b3}}" as="sq" hint-placeholder-count="64"><div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-family: 'DejaVu Sans', 'Segoe UI Symbol', 'Arial Unicode MS', sans-serif; font-size: 26px; line-height: 1; background: {{sq.bg}}; color: {{sq.fg}}; -webkit-text-stroke: {{sq.thin}}; paint-order: stroke fill">{{sq.glyph}}</div></sc-for>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div role="img" aria-label="Puzzle 3 preview" style="display: grid; grid-template-columns: repeat(8, 37px); width: 296px; border-radius: 3px; overflow: hidden">
+<sc-for list="{{b3}}" as="sq" hint-placeholder-count="64"><div style="position: relative; width: 37px; height: 37px; background: {{sq.bg}}"><sc-if value="{{sq.img}}"><img src="{{sq.img}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%"></sc-if></div></sc-for>
 </div>
-<div style="font-size: 28px; font-weight: 700">3. Hard</div>
-<div style="font-size: 24px; color: #B9B1A0">Mate in two</div>
+<div style="font-size: 30px; font-weight: 700">3. Hard</div>
+<div style="font-size: 26px; color: #B9B1A0; margin-top: -8px">Mate in two</div>
 </div>
 </div>
 <div style="flex: 1"></div>
@@ -54,21 +54,18 @@ body{margin:0}
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":1350}}'>
 class Component extends DCLogic {
 squares(pos) {
-var g = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟' }, f = 'abcdefgh', out = [];
+var f = 'abcdefgh', out = [];
 for (var r = 8; r >= 1; r--) {
 for (var i = 0; i < 8; i++) {
-var n = f[i] + r, dark = (i + r) % 2 === 1, pc = pos[n], glyph = '', fg = '#141414', thin = '0px #141414';
-if (pc) { glyph = g[pc.toLowerCase()] + '︎'; if (pc === pc.toUpperCase()) { fg = '#FFFFFF'; thin = '1px #141414'; } }
-out.push({ glyph: glyph, fg: fg, thin: thin, bg: dark ? '#9C7A45' : '#EADBB8' });
+var n = f[i] + r, dark = (i + r) % 2 === 1, pc = pos[n], img = '';
+if (pc) img = './pieces/' + (pc === pc.toUpperCase() ? 'w' : 'b') + pc.toUpperCase() + '.svg';
+out.push({ img: img, bg: dark ? '#9C7A45' : '#EADBB8' });
 }
 }
 return out;
 }
 renderVals() {
-var p1 = { g1: 'K', e1: 'R', c3: 'N', a2: 'P', b3: 'P', c2: 'P', f2: 'P', g2: 'P', h2: 'P', g8: 'k', d4: 'r', c6: 'n', a7: 'p', b7: 'p', f7: 'p', g7: 'p', h7: 'p' };
-var p2 = { g1: 'K', e1: 'R', d5: 'N', a2: 'P', b2: 'P', c2: 'P', f2: 'P', g2: 'P', h2: 'P', g8: 'k', c6: 'q', f8: 'r', c8: 'b', a7: 'p', b7: 'p', f7: 'p', g7: 'p', h7: 'p' };
-var p3 = { g1: 'K', c4: 'Q', h6: 'N', c1: 'B', a1: 'R', f1: 'R', a2: 'P', b2: 'P', c3: 'P', e4: 'P', f2: 'P', g2: 'P', h2: 'P', h8: 'k', d8: 'q', f8: 'r', a8: 'r', c8: 'b', a7: 'p', b7: 'p', c6: 'p', e5: 'p', g7: 'p', h7: 'p' };
-return { b1: this.squares(p1), b2: this.squares(p2), b3: this.squares(p3) };
+return { b1: this.squares({"g1": "K", "e1": "R", "c3": "N", "a2": "P", "b3": "P", "c2": "P", "f2": "P", "g2": "P", "h2": "P", "g8": "k", "d4": "r", "c6": "n", "a7": "p", "b7": "p", "f7": "p", "g7": "p", "h7": "p"}), b2: this.squares({"g1": "K", "e1": "R", "d5": "N", "a2": "P", "b2": "P", "c2": "P", "f2": "P", "g2": "P", "h2": "P", "g8": "k", "c6": "q", "f8": "r", "c8": "b", "a7": "p", "b7": "p", "f7": "p", "g7": "p", "h7": "p"}), b3: this.squares({"g1": "K", "c4": "Q", "h6": "N", "c1": "B", "a1": "R", "f1": "R", "a2": "P", "b2": "P", "c3": "P", "e4": "P", "f2": "P", "g2": "P", "h2": "P", "h8": "k", "d8": "q", "f8": "r", "a8": "r", "c8": "b", "a7": "p", "b7": "p", "c6": "p", "e5": "p", "g7": "p", "h7": "p"}) };
 }
 }
 </script>

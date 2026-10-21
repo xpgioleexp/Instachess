@@ -13,62 +13,55 @@
 body{margin:0}
 </style>
 </helmet>
-<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 64px 72px; background: #0B0B0B; color: #F5F1E6; font-family: Inter, sans-serif; display: flex; flex-direction: column; gap: 28px">
-<div style="display: flex; justify-content: space-between; align-items: center; font-size: 26px; font-weight: 600; color: #B9B1A0">
-<div>Answer 3</div>
-<div>7 / 8</div>
+<div style="width: 1080px; height: 1350px; box-sizing: border-box; padding: 44px 92px 40px; background: #0B0B0B; color: #F5F1E6; font-family: Inter, sans-serif; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px">
+<h2 style="margin: 0; font-family: Anton, sans-serif; font-weight: 400; font-size: 86px; line-height: 1; letter-spacing: 1px">Qg8+! then Nf7#</h2>
+<div style="font-size: 26px; font-weight: 600; color: #B9B1A0; white-space: nowrap">Answer 3</div>
 </div>
-<h2 style="margin: 0; font-family: Anton, sans-serif; font-weight: 400; font-size: 96px; line-height: 1; letter-spacing: 1px">Qg8+! then Nf7#</h2>
-<div style="display: flex; flex-direction: column; gap: 10px">
-<div style="display: flex; gap: 10px">
-<div aria-hidden="true" style="display: flex; flex-direction: column; width: 24px">
-<sc-for list="{{ranks}}" as="r" hint-placeholder-count="8"><div style="height: 72px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 500; color: #B9B1A0">{{r}}</div></sc-for>
-</div>
-<div role="img" aria-label="Final position: the queen was sacrificed on g8 and taken by the rook; the knight jumped from h6 to f7 and mates the king on h8" style="position: relative; width: 576px; height: 576px; display: grid; grid-template-columns: repeat(8, 72px)">
+<div role="img" aria-label="Final position: the queen was sacrificed on g8 and taken by the rook; the knight jumped from h6 to f7 and mates the king on h8" style="position: relative; width: 896px; height: 896px; display: grid; grid-template-columns: repeat(8, 112px); flex-shrink: 0; border-radius: 4px; overflow: hidden">
 <sc-for list="{{squares}}" as="sq" hint-placeholder-count="64">
-<div style="width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; font-family: 'DejaVu Sans', 'Segoe UI Symbol', 'Arial Unicode MS', sans-serif; font-size: 58px; line-height: 1; background: {{sq.bg}}; box-shadow: {{sq.ring}}; color: {{sq.fg}}; -webkit-text-stroke: {{sq.stroke}}; paint-order: stroke fill">{{sq.glyph}}</div>
+<div style="position: relative; width: 112px; height: 112px; background: {{sq.bg}}; box-shadow: {{sq.ring}}">
+<div aria-hidden="true" style="position: absolute; left: 7px; top: 4px; font-size: 19px; font-weight: 700; color: {{sq.co}}">{{sq.rank}}</div>
+<div aria-hidden="true" style="position: absolute; right: 7px; bottom: 3px; font-size: 19px; font-weight: 700; color: {{sq.co}}">{{sq.file}}</div>
+</div>
 </sc-for>
-<svg aria-hidden="true" width="576" height="576" viewBox="0 0 576 576" style="position: absolute; left: 0; top: 0; pointer-events: none"><defs><marker id="ah-a3" viewBox="0 0 10 10" refX="3" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D4AF37"></path></marker></defs><path d="{{a1}}" stroke="#D4AF37" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.92" stroke-dasharray="2 22" marker-end="url(#ah-a3)"></path><path d="{{a2}}" stroke="#D4AF37" stroke-width="12" stroke-linecap="round" fill="none" opacity="0.92" marker-end="url(#ah-a3)"></path></svg>
+<svg aria-hidden="true" width="896" height="896" viewBox="0 0 896 896" style="position: absolute; left: 0; top: 0; pointer-events: none"><defs><marker id="ah-a3" viewBox="0 0 10 10" refX="3" refY="5" markerWidth="2.6" markerHeight="2.6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D4AF37"></path></marker></defs><path d="{{a1}}" stroke="#D4AF37" stroke-width="20" stroke-linecap="round" fill="none" opacity="0.9" stroke-dasharray="2 30" marker-end="url(#ah-a3)"></path><path d="{{a2}}" stroke="#D4AF37" stroke-width="20" stroke-linecap="round" fill="none" opacity="0.9" marker-end="url(#ah-a3)"></path></svg>
+<div style="position: absolute; inset: 0; display: grid; grid-template-columns: repeat(8, 112px); pointer-events: none">
+<sc-for list="{{squares}}" as="sq" hint-placeholder-count="64"><div style="position: relative; width: 112px; height: 112px"><sc-if value="{{sq.img}}"><img src="{{sq.img}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%"></sc-if></div></sc-for>
 </div>
 </div>
-<div aria-hidden="true" style="display: flex; margin-left: 34px">
-<sc-for list="{{files}}" as="f" hint-placeholder-count="8"><div style="width: 72px; text-align: center; font-size: 20px; font-weight: 500; color: #B9B1A0">{{f}}</div></sc-for>
-</div>
-</div>
-<div style="display: flex; flex-direction: column; gap: 14px; max-width: 920px">
-<p style="margin: 0; font-size: 31px; line-height: 1.38; color: #D8D1C2"><b style="color: #F5F1E6">1.Qg8+!</b> The king can't take: the knight on h6 guards g8. So the rook has to take the queen.</p>
-<p style="margin: 0; font-size: 31px; line-height: 1.38; color: #D8D1C2"><b style="color: #F5F1E6">2.Nf7#</b> The rook now blocks the king's last square. The knight checks, and nothing can take it.</p>
-<p style="margin: 0; font-size: 31px; line-height: 1.38; color: #D8D1C2"><b style="color: #F5F1E6">Smothered mate.</b> The king is trapped by its own pieces.</p>
-<p style="margin: 0; font-size: 28px; line-height: 1.38; color: #B9B1A0">The lesson: a sacrifice works when every reply is forced. Check each one before you play it.</p>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<p style="margin: 0; font-size: 33px; line-height: 1.34; color: #D8D1C2; max-width: 896px"><b style="color: #F5F1E6">1.Qg8+ Rxg8</b> is forced, because the knight guards g8. 2.Nf7# and the king is smothered by its own pieces.</p>
+<p style="margin: 0; font-size: 28px; line-height: 1.34; color: #B9B1A0; max-width: 896px">Lesson: a sacrifice works when every reply is forced.</p>
 </div>
 <div style="flex: 1"></div>
 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 26px; font-weight: 600; color: #B9B1A0">
 <div>@pawn.to.king.chess</div>
-<svg aria-hidden="true" width="44" height="28" viewBox="0 0 44 28" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M2 14h38M28 3l12 11-12 11"></path></svg>
+<div style="display: flex; align-items: center; gap: 18px">7 / 8<svg aria-hidden="true" width="44" height="28" viewBox="0 0 44 28" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M2 14h38M28 3l12 11-12 11"></path></svg></div>
 </div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":1350}}'>
 class Component extends DCLogic {
-squares(pos, hl) {
-var g = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟' }, f = 'abcdefgh', out = [];
+squares(pos, hl, s) {
+var f = 'abcdefgh', out = [];
 for (var r = 8; r >= 1; r--) {
 for (var i = 0; i < 8; i++) {
-var n = f[i] + r, dark = (i + r) % 2 === 1, pc = pos[n], glyph = '', fg = '#141414', stroke = '0px #141414';
-if (pc) { glyph = g[pc.toLowerCase()] + '︎'; if (pc === pc.toUpperCase()) { fg = '#FFFFFF'; stroke = '2px #141414'; } }
-out.push({ glyph: glyph, fg: fg, stroke: stroke, bg: dark ? '#9C7A45' : '#EADBB8', ring: hl.indexOf(n) >= 0 ? 'inset 0 0 0 6px #D4AF37' : 'none' });
+var n = f[i] + r, dark = (i + r) % 2 === 1, pc = pos[n], img = '';
+if (pc) img = './pieces/' + (pc === pc.toUpperCase() ? 'w' : 'b') + pc.toUpperCase() + '.svg';
+out.push({ img: img, bg: dark ? '#9C7A45' : '#EADBB8', co: dark ? '#EADBB8' : '#9C7A45', rank: i === 0 ? String(r) : '', file: r === 1 ? f[i] : '', ring: hl.indexOf(n) >= 0 ? 'inset 0 0 0 8px #D4AF37' : 'none' });
 }
 }
 return out;
 }
 arrow(a, b, s) {
 var f = 'abcdefgh', x1 = f.indexOf(a[0]) * s + s / 2, y1 = (8 - Number(a[1])) * s + s / 2, x2 = f.indexOf(b[0]) * s + s / 2, y2 = (8 - Number(b[1])) * s + s / 2;
-var dx = x2 - x1, dy = y2 - y1, L = Math.sqrt(dx * dx + dy * dy), k = (L - s * 0.38) / L;
+var dx = x2 - x1, dy = y2 - y1, L = Math.sqrt(dx * dx + dy * dy), k = (L - s * 0.36) / L;
 return 'M' + x1 + ' ' + y1 + 'L' + (x1 + dx * k).toFixed(1) + ' ' + (y1 + dy * k).toFixed(1);
 }
 renderVals() {
-var p = { g1: 'K', f7: 'N', c1: 'B', a1: 'R', f1: 'R', a2: 'P', b2: 'P', c3: 'P', e4: 'P', f2: 'P', g2: 'P', h2: 'P', h8: 'k', d8: 'q', g8: 'r', a8: 'r', c8: 'b', a7: 'p', b7: 'p', c6: 'p', e5: 'p', g7: 'p', h7: 'p' };
-return { squares: this.squares(p, ['h8']), a1: this.arrow('c4', 'g8', 72), a2: this.arrow('h6', 'f7', 72), ranks: ['8', '7', '6', '5', '4', '3', '2', '1'], files: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] };
+var p = {"g1": "K", "c1": "B", "a1": "R", "f1": "R", "a2": "P", "b2": "P", "c3": "P", "e4": "P", "f2": "P", "g2": "P", "h2": "P", "h8": "k", "d8": "q", "a8": "r", "c8": "b", "a7": "p", "b7": "p", "c6": "p", "e5": "p", "g7": "p", "h7": "p", "g8": "r", "f7": "N"};
+return { squares: this.squares(p, ["h8"], 112), a1: this.arrow('c4', 'g8', 112), a2: this.arrow('h6', 'f7', 112) };
 }
 }
 </script>

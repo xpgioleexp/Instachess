@@ -1,10 +1,12 @@
-import json, os, re, sys, zipfile
+import functools, http.server, json, os, re, sys, threading
+from PIL import Image
 from playwright.sync_api import sync_playwright
 
-ROOT = sys.argv[1]
-OUT = os.path.join(ROOT, 'exports')
-ANTON = os.path.join(ROOT, 'fonts', 'Anton-Regular.ttf')
-SETS = [('carousel', 'mindset'), ('chess', 'chess-principles'), ('italian', 'italian-game'), ('puzzles', 'puzzles')]
+# Usage: python3 scripts/export.py [carousel ...]   (default: all four)
+# Writes slides-png/<carousel>/NN-<slide>.png, plus instagram-ready-jpeg/<carousel>/ JPEGs.
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SETS = sys.argv[1:] or ['mindset', 'chess-principles', 'italian-game', 'puzzles']
+CHROMIUM = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'
 
 SHIM = r"""
 <script>
@@ -55,37 +57,43 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 """
 
-FONTFACE = "<style>@font-face{font-family:'Anton';src:url('file://%s') format('truetype');}</style>" % ANTON
+FONTFACE = "<style>@font-face{font-family:'Anton';src:url('/fonts/Anton-Regular.ttf') format('truetype');}</style>"
 
 def slug(title):
     return re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')
 
-os.makedirs(OUT, exist_ok=True)
+# Serve the repo over HTTP so slides can load ./pieces/ and the Anton font by relative URL.
+srv = http.server.ThreadingHTTPServer(('127.0.0.1', 0), functools.partial(http.server.SimpleHTTPRequestHandler, directory=ROOT))
+srv.RequestHandlerClass.log_message = lambda *a: None
+threading.Thread(target=srv.serve_forever, daemon=True).start()
+BASE = 'http://127.0.0.1:%d/' % srv.server_address[1]
+
 with sync_playwright() as pw:
-    browser = pw.chromium.launch()
+    browser = pw.chromium.launch(executable_path=CHROMIUM if os.path.exists(CHROMIUM) else None)
     page = browser.new_page(viewport={'width': 1080, 'height': 1350})
-    for folder, name in SETS:
-        proj = os.path.join(ROOT, folder, 'project')
+    for name in SETS:
+        proj = os.path.join(ROOT, 'source', name)
         canvas = json.load(open(os.path.join(proj, 'canvas.json')))
-        dest = os.path.join(OUT, name); os.makedirs(dest, exist_ok=True)
+        dest = os.path.join(ROOT, 'slides-png', name); os.makedirs(dest, exist_ok=True)
+        jdest = os.path.join(ROOT, 'instagram-ready-jpeg', name); os.makedirs(jdest, exist_ok=True)
         paths = []
         for idx, f in enumerate(canvas['order'], 1):
             html = open(os.path.join(proj, f)).read()
             html = html.replace('<script src="./support.js"></script>', SHIM)
             html = re.sub(r'<link href="https://fonts\.googleapis\.com[^>]*>', '', html)
             html = html.replace('</head>', FONTFACE + '<style>body{margin:0}</style></head>', 1)
-            tmp = os.path.join(dest, '_tmp.html'); open(tmp, 'w').write(html)
-            page.goto('file://' + tmp)
+            tmp = os.path.join(proj, '_tmp-%02d.html' % idx)  # next to the source so ./pieces/ resolves; unique name dodges the HTTP cache
+            open(tmp, 'w').write(html)
+            page.goto(BASE + os.path.relpath(tmp, ROOT))
             page.wait_for_function('window.__ready === true')
             page.evaluate("Promise.all([document.fonts.load('96px Anton'), document.fonts.load('600 26px Inter'), document.fonts.load('64px \"DejaVu Sans\"')]).then(() => document.fonts.ready)")
+            page.wait_for_function('Array.from(document.images).every(i => i.complete && i.naturalWidth > 0)')
             page.wait_for_timeout(150)
             title = canvas['boards'][f].get('title', f)
             png = os.path.join(dest, '%02d-%s.png' % (idx, slug(re.sub(r'^\d+\s*', '', title))))
             page.screenshot(path=png, clip={'x': 0, 'y': 0, 'width': 1080, 'height': 1350})
+            Image.open(png).convert('RGB').save(os.path.join(jdest, os.path.basename(png)[:-4] + '.jpg'), quality=92, subsampling=0)
             paths.append(png)
             os.remove(tmp)
-        z = os.path.join(OUT, name + '-slides.zip')
-        with zipfile.ZipFile(z, 'w', zipfile.ZIP_DEFLATED) as zf:
-            for p in paths: zf.write(p, os.path.basename(p))
         print(name, len(paths))
     browser.close()
